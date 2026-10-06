@@ -928,7 +928,10 @@
             <button class="btn gold" type="submit">Send on WhatsApp</button>
             <button class="btn" type="button" id="mailbtn">Send by email</button>
           </div>
-          <p class="note" id="status">Your message opens in WhatsApp or your email app, ready to send.</p>
+          <p class="note" id="status" aria-live="polite">Choose WhatsApp or email. Your message will be prepared in that
+            app; press Send there to deliver it.</p>
+          <p class="note">If your email app does not open, copy the address: <a
+              href="mailto:pastormike2000ng@yahoo.com">pastormike2000ng@yahoo.com</a>.</p>
         </form>
       </div>
     </section>
@@ -1024,15 +1027,15 @@
     }
     $("form").addEventListener("submit", e => {
       e.preventDefault(); const o = getMsg(); if (!o) return;
-      window.open(`https://wa.me/${PHONE}?text=${encodeURIComponent(o.text)}`, "_blank", "noopener");
-      $("status").textContent = "WhatsApp opened. Tap send there to deliver your message.";
+      const link = `https://wa.me/${PHONE}?text=${encodeURIComponent(o.text)}`;
+      $("status").textContent = "Opening WhatsApp. Review your message and tap Send there to deliver it.";
+      window.location.assign(link);
     });
     $("mailbtn").addEventListener("click", () => {
       const o = getMsg(); if (!o) return;
-      const a = document.createElement("a");
-      a.href = `mailto:${EMAIL}?subject=${encodeURIComponent(o.subject)}&body=${encodeURIComponent(o.text)}`;
-      a.target = "_blank"; a.rel = "noopener"; document.body.appendChild(a); a.click(); a.remove();
-      $("status").textContent = "Your email app should open. If it did not, send your message to " + EMAIL + ".";
+      const mailto = `mailto:${EMAIL}?subject=${encodeURIComponent(o.subject)}&body=${encodeURIComponent(o.text)}`;
+      $("status").textContent = "Opening your email app with the message ready. Press Send there to deliver it.";
+      window.location.assign(mailto);
     });
   </script>
 </body>
